@@ -1,0 +1,14 @@
+/examples/*
+/*/__pycache__/
+/工作路径/*
+*.log
+__pycache__
+/2023example/*
+/build/*
+/dist/*
+*.spec
+*.exe
+/*表格
+*.xlsx
+!/config/信息说明.xlsx
+!/config/文件依赖图.xlsx
