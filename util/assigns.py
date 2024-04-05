@@ -49,7 +49,7 @@ def assignGroups(leader_abundant=False):
         for member in cp_of_staff:
             if member in group_member:
                 group_member.remove(member)
-        random.shuffle(group_member)
+        #random.shuffle(group_member)
         while team_id <= len(GlobalVar.team_info) and len(group_member) > 0:
             # 先尝试插入从团队内找到的小组长
             while(len(group_staff) > 0):
@@ -77,9 +77,12 @@ def assignGroups(leader_abundant=False):
                         if cp in group_member:
                             group_member.remove(cp)
         # 剩下的小组长候选人作为普通组员加入
+        
         if leader_abundant:
             while len(group_staff) > 0:
                 group_leader = group_staff.pop()
+                if GlobalVar.volunteer_info[group_leader].team is not None:
+                    continue
                 if GlobalVar.team_info[str(team_id)].calc_team_vacancy() >= len(getCP(group_leader)):
                     GlobalVar.team_info[str(team_id)].insert(getCP(group_leader))
                 else:
@@ -96,7 +99,8 @@ def assignViceLeader():
     假定小闪电不是小组长、也不是团队中人，如果是，直接从小闪电里面踢掉。
     情侣中取得分高的为小闪电。
     """
-    
+    if len(GlobalVar.vice_leader_list) == 0:
+        return
     random.shuffle(GlobalVar.vice_leader_list)
     for team_id, team in GlobalVar.team_info.items():
         if len(GlobalVar.vice_leader_list) == 0:
@@ -126,9 +130,8 @@ def assignMembers():
             volunteer.staff.want_leader == True and \
             volunteer.team is None:
             staff_leaders.append(vol_id)
-    
     # 按小组分配小组长
-    random.shuffle(staff_leaders)
+    # random.shuffle(staff_leaders)
     for team_id, team in GlobalVar.team_info.items():
         if not team.team_leader is None:
             continue
@@ -226,7 +229,7 @@ def assignTeams():
     print("开始分配小闪电")
     assignViceLeader()
     print("开始分配团体")
-    assignGroups()
+    assignGroups(leader_abundant=True)
     print("开始分配小组长")
     assignMembers()
     print("开始分配内部")

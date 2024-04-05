@@ -53,6 +53,7 @@ def outputCPlist():
     # 使用嵌套列表推导式,将所有列表补齐为相同长度
     lists_padded = [cp + [None] * (max_length - len(cp)) for cp in GlobalVar.cp_lists]
     df = pd.DataFrame(lists_padded).astype(str)
+    os.makedirs(os.path.join(工作路径,"debug"),exist_ok=True)
     df.to_excel(os.path.join(工作路径,"debug","情侣信息.xlsx"), index=False)
         
 def outputTeamInfo(file_path: str):
