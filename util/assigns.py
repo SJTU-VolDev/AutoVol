@@ -37,7 +37,7 @@ def assignGroups(leader_abundant=False):
         return
     
     # 随机指定一个组填充团队
-    team_id = random.randint(1,len(GlobalVar.team_info) // group_num // 2)
+    team_id = random.randint(5,len(GlobalVar.team_info) // group_num // 2)
     # 按照团体执行插入操作
     for _,group in GlobalVar.group_lists.items():
 
@@ -68,7 +68,7 @@ def assignGroups(leader_abundant=False):
                    
                 # 插入时连同CP一起插入
                 cps = getCP(to_insert)
-                if GlobalVar.team_info[str(team_id)].insert(cps) == False:
+                if GlobalVar.team_info[str(team_id)].insert(cps,True) == False:
                     team_id += 1
                     group_member.append(to_insert)
                     break
@@ -83,6 +83,7 @@ def assignGroups(leader_abundant=False):
                 group_leader = group_staff.pop()
                 if GlobalVar.volunteer_info[group_leader].team is not None:
                     continue
+                GlobalVar.volunteer_info[group_leader].staff.want_leader = False
                 if GlobalVar.team_info[str(team_id)].calc_team_vacancy() >= len(getCP(group_leader)):
                     GlobalVar.team_info[str(team_id)].insert(getCP(group_leader))
                 else:

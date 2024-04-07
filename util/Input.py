@@ -204,8 +204,10 @@ def handleCouples(file_dir: str):
     for j in range(len(table[keys[0]])):
         if not ((table["同学1学号"][j]) in GlobalVar.volunteer_info):
             print("注意：情侣表中 {} 同学可能没有报名,也可能有其他问题,请确认！".format(table["同学1学号"][j]))
+            continue
         if not ( str(table["同学2学号"][j]) in GlobalVar.volunteer_info):
             print("注意：情侣表中 {} 同学可能没有报名,也可能有其他问题,请确认！".format(table["同学2学号"][j]))
+            continue
 
         add_binary(str(table["同学1学号"][j]),str(table["同学2学号"][j]))
     # Til now, all the couples are handled in GlobalVar.cp_lists
