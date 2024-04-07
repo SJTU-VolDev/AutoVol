@@ -255,7 +255,7 @@ def handleViceLeader(file_dir: str, TeamNum: int):
 
     return
 
-def splitTeamByPosition(file_dir : str) -> (int,int):
+def splitTeamByPosition(file_dir : str):
     """
     按照岗位信息,拆分小组
     Args:
