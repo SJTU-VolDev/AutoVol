@@ -10,6 +10,7 @@ class GlobalVar(object):
 
     cp_lists = []
     group_lists = {}
+    group_colors = {}
     team_info = {}
     position_info = {}
     # 最关键的！所有志愿者构成的dict

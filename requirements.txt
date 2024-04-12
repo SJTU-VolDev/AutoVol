@@ -5,3 +5,4 @@ networkx
 pyinstaller
 xlsxwriter
 requests
+matplotlib

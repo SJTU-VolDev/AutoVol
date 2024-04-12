@@ -37,7 +37,7 @@ def assignGroups(leader_abundant=False):
         return
     
     # 随机指定一个组填充团队
-    team_id = random.randint(5,len(GlobalVar.team_info) // group_num // 2)
+    team_id = random.randint(1,len(GlobalVar.team_info) // group_num // 2)
     # 按照团体执行插入操作
     for _,group in GlobalVar.group_lists.items():
 
@@ -199,9 +199,10 @@ def assignLeftovers():
         if not (GlobalVar.volunteer_info[vol].team is None):
             continue # 别人的cp,已经加入过了。
         toInsert = getCP(vol)
-        for teamid in range(1,len(GlobalVar.team_info)+1):
-            if GlobalVar.team_info[str(teamid)].insert(toInsert):
-                break
+        teamid = random.randint(1,len(GlobalVar.team_info))
+        while not GlobalVar.team_info[str(teamid)].insert(toInsert):
+            teamid = random.randint(1,len(GlobalVar.team_info))
+
     teamid = 1 # 插入情侣后可能有小组仍有空位，从第一组开始插入直到填满
     for vol in single:
         while teamid <= len(GlobalVar.team_info):

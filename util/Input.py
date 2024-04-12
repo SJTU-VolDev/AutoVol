@@ -159,7 +159,6 @@ def handleGroups(file_dir: str):
         # 为每个团队创建一个Group对象
         group_name = file_name.split(".")[0]
         GlobalVar.group_lists[group_name] = Group(group_name)
-
         # 读取团队成员信息
         keys, table = readTableAndInterpretKeys(os.path.join(file_dir,"团体",file_name))
 

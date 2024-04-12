@@ -17,10 +17,27 @@ def Generate(file_dir: str) -> None:
     """
     sys.stdout = GlobalVar.log_file
     print("开始导出总表...")
+    getGroupColor()
     os.makedirs(file_dir, exist_ok=True)
     generateMain(file_dir)
     print("导出总表完成！")
     sys.stdout = GlobalVar.original_stdout
+
+def getGroupColor():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    cmap = plt.cm.get_cmap('Set3')
+    colors = cmap(np.arange(len(GlobalVar.group_lists)))
+    print(colors)
+    index = 0
+    for group in GlobalVar.group_lists:
+        r = int(colors[index][0] * 255)
+        g = int(colors[index][1] * 255)
+        b = int(colors[index][2] * 255)
+        color_code = f'#{r:02x}{g:02x}{b:02x}'
+        GlobalVar.group_colors[group] = color_code
+        index += 1
+    return
 
 def takeColors(row):
     # 按行着色
@@ -34,7 +51,9 @@ def takeColors(row):
         return ['background-color:' + colors["vice_leader"]] * len(row)
     if GlobalVar.volunteer_info[id].family is not None:
         return ['background-color: ' + colors["family"]] * len(row)
-    if len(getCP(GlobalVar.volunteer_info[id].staff)) > 1:
+    if len(GlobalVar.volunteer_info[id].groups) > 0:
+        return ['background-color: ' + GlobalVar.group_colors[GlobalVar.volunteer_info[id].groups[0]]] * len(row)
+    if len(getCP(id)) > 1:
         return ['background-color: ' + colors["cp"]] * len(row)
     return [''] * len(row)
 
