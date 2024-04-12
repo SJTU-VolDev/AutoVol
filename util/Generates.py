@@ -57,15 +57,16 @@ def takeColors(row):
         return ['background-color: ' + colors["cp"]] * len(row)
     return [''] * len(row)
 
-def setColumn(excel_writer: pd.ExcelWriter, sheet_name: str, excel: pd.DataFrame):
+def setColumn(excel_writer: pd.ExcelWriter, sheet_name: str, excel: pd.DataFrame, factor=1.8):
     """
     按长度调整列宽
     """
     worksheet = excel_writer.sheets[sheet_name]
     for col_num, col_value in enumerate(excel.columns):
-        column_len = excel[col_value].astype(str).str.len().max()
-        column_len = max(column_len, len(col_value))  # 考虑列名的长度
-        worksheet.set_column(col_num, col_num, column_len + 5)  # 留出一些空隙
+        column_len = max(excel[col_value].astype(str).str.len().max(), len(col_value))*factor
+        if col_value == "姓名":
+            column_len = 4*factor
+        worksheet.set_column(col_num, col_num, column_len + 2)  # 留出一些空隙
     return excel_writer
 
 def generateMain(file_dir: str, need_output_team=True) -> None:
