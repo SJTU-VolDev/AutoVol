@@ -385,7 +385,7 @@ def divInterviewResult(file_dir:str, pass_num:int, reserve_num:int, to_excel_fla
     while len(table_pass) < pass_num and len(sorted_list) > 0:
         table_pass.append(sorted_list.pop(0))
         if table_pass[-1] not in GlobalVar.volunteer_info:
-            print("注意：有人冲考！没有报名！")
+            print(f"注意：{table_pass[-1]}冲考！没有报名！")
             table_pass.pop(-1)
         else:
             GlobalVar.volunteer_info[table_pass[-1]].interview = "pass"
@@ -393,7 +393,7 @@ def divInterviewResult(file_dir:str, pass_num:int, reserve_num:int, to_excel_fla
     while len(table_reserve) < reserve_num and len(sorted_list) > 0:
         table_reserve.append(sorted_list.pop(0))
         if table_reserve[-1] not in GlobalVar.volunteer_info:
-            print("注意：有人冲考！没有报名！")
+            print(f"注意：{table_reserve[-1]}冲考！没有报名！")
             table_reserve.pop(-1)
         else:
             GlobalVar.volunteer_info[table_reserve[-1]].interview = "reserve"
@@ -401,7 +401,7 @@ def divInterviewResult(file_dir:str, pass_num:int, reserve_num:int, to_excel_fla
     while len(sorted_list) > 0:
         table_fail.append(sorted_list.pop(0))
         if table_fail[-1] not in GlobalVar.volunteer_info:
-            print("注意：有人冲考！没有报名！")
+            print(f"注意：{table_fail[-1]}冲考！没有报名！")
             table_fail.pop(-1)
         else:
             GlobalVar.volunteer_info[table_fail[-1]].interview = "fail"

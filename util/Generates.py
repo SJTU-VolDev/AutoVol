@@ -148,7 +148,7 @@ def generateTeamExcels(file_dir: str, file_name="总表.xlsx"):
     team_file_dir = os.path.join(file_dir, "按小组名单")
     os.makedirs(team_file_dir, exist_ok=True)
     team_list = excel.groupby("小组号").count().index
-    print(team_list)
+    #print(team_list)
     for _, team_id in enumerate(team_list):
         team_id = str(team_id)
         team_excel = excel.loc[excel["小组号"]==team_id]
