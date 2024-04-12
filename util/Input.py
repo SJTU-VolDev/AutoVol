@@ -301,7 +301,34 @@ def splitTeamByPosition(file_dir : str):
             res -= 1
         
     return recruit_total,TeamId
-   
+
+def GenerateInterviewResult(table,save_path,file_name):
+    """
+    生成面试结果表
+    Args:
+        table(pd.DataFrame): 面试结果表
+        save_path(str): 保存路径
+        file_name(str): 文件名
+    """
+    os.makedirs(save_path,exist_ok=True)
+    
+    table_pass_excel = pd.DataFrame(columns=["姓名","学号","邮箱","jAccount","手机号"])
+    for vol in table:
+        vol_info = list({"姓名":GlobalVar.volunteer_info[vol].personal_info["姓名"],
+                        "学号":GlobalVar.volunteer_info[vol].personal_info["学号"],
+                        "邮箱":GlobalVar.volunteer_info[vol].personal_info["邮箱"],
+                        "jAccount":GlobalVar.volunteer_info[vol].personal_info["邮箱"].split("@")[0],
+                        "手机号":GlobalVar.volunteer_info[vol].personal_info["手机号"]}.values())
+        table_pass_excel = pd.concat([table_pass_excel,pd.DataFrame([vol_info],columns=["姓名","学号","邮箱","jAccount","手机号"])],ignore_index=True)
+    with pd.ExcelWriter(os.path.join(save_path,file_name),mode="w",engine="xlsxwriter") as writer:
+        table_pass_excel.to_excel(writer, sheet_name="面试结果",index=False)
+        worksheet = writer.sheets["面试结果"]
+        for col_num, col_value in enumerate(table_pass_excel.columns):
+            column_len = table_pass_excel[col_value].astype(str).str.len().max()
+            column_len = max(column_len, len(col_value))  # 考虑列名的长度
+            worksheet.set_column(col_num, col_num, column_len + 5) # 留出一些空隙
+    return
+
 def divInterviewResult(file_dir:str, pass_num:int, reserve_num:int, to_excel_flag:bool=False) -> None:
     """
     将面试者按照面试的归一化得分排序分为三类: "面试结果-通过" / "面试结果-储备" / "面试结果-未通过".
@@ -381,20 +408,11 @@ def divInterviewResult(file_dir:str, pass_num:int, reserve_num:int, to_excel_fla
 
     # 将面试结果写入志愿者信息表
     if to_excel_flag:
-        table_interview_folder = os.path.join(工作路径,"面试结果")
-        os.makedirs(table_interview_folder,exist_ok=True)
+        GenerateInterviewResult(table_pass,os.path.join(工作路径,"面试结果"),"面试汇总表-通过.xlsx")
+        GenerateInterviewResult(table_reserve,os.path.join(工作路径,"面试结果"),"面试汇总表-储备.xlsx")
+        GenerateInterviewResult(table_fail,os.path.join(工作路径,"面试结果"),"面试汇总表-未通过.xlsx")
 
-        table_pass_excel = pd.DataFrame(table_pass)
-        table_pass_excel_path = os.path.join(table_interview_folder,"面试汇总表-通过.xlsx")
-        table_pass_excel.to_excel(table_pass_excel_path, index=False)
-
-        table_reserve_excel = pd.DataFrame(table_reserve)
-        table_reserve_excel_path = os.path.join(table_interview_folder,"面试汇总表-储备.xlsx")
-        table_reserve_excel.to_excel(table_reserve_excel_path, index=False)
-
-        table_fail_excel = pd.DataFrame(table_fail)
-        table_fail_excel_path = os.path.join(table_interview_folder,"面试汇总表-未通过.xlsx")
-        table_fail_excel.to_excel(table_fail_excel_path, index=False)
+        
     return
 
 def InputAndPreTreatment():
