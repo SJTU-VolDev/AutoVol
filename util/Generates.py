@@ -113,7 +113,7 @@ def generateMain(file_dir: str, need_output_team=True) -> None:
             export_info.append(member_export_info)
     col_names = ['小组号', '岗位', '岗位类型', '小组长'] + personal_info_keys + other_info_keys
     excel = pd.DataFrame(export_info, columns= col_names)
-    
+    excel.insert(excel.columns.get_loc("邮箱")+1, 'Jaccount', [x.split('@')[0] for x in excel['邮箱']])
     # set the style
 
     excel = excel.style\
@@ -152,6 +152,7 @@ def generateTeamExcels(file_dir: str, file_name="总表.xlsx"):
     for _, team_id in enumerate(team_list):
         team_id = str(team_id)
         team_excel = excel.loc[excel["小组号"]==team_id]
+        #team_excel['Jaccount'] = team_excel['邮箱'].str.split('@').str[0]
         team_excel = team_excel.style\
         .applymap(lambda _: 'text-align: center')
 
