@@ -132,7 +132,7 @@ def assignMembers():
             volunteer.team is None:
             staff_leaders.append(vol_id)
     # 按小组分配小组长
-    # random.shuffle(staff_leaders)
+    random.shuffle(staff_leaders)
     for team_id, team in GlobalVar.team_info.items():
         if not team.team_leader is None:
             continue
@@ -162,7 +162,7 @@ def assignStaff():
             toInsert.append(vol_id)
             GlobalVar.volunteer_info[vol_id].staff.want_leader = False
     
-    # random.shuffle(toInsert)
+    random.shuffle(toInsert)
     while len(toInsert) > 0: #直到插入完毕
         for team_id in GlobalVar.team_info.keys(): # 遍历小组
             for vol in toInsert: # 寻找可以插入的成员
