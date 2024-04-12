@@ -28,7 +28,6 @@ def getGroupColor():
     import numpy as np
     cmap = plt.cm.get_cmap('Set3')
     colors = cmap(np.arange(len(GlobalVar.group_lists)))
-    print(colors)
     index = 0
     for group in GlobalVar.group_lists:
         r = int(colors[index][0] * 255)
@@ -129,7 +128,7 @@ def generateMain(file_dir: str, need_output_team=True) -> None:
     excel_writer = setColumn(excel_writer, "总表", excel.data)
     generateTeam(excel_writer)
     generateReserved(excel_writer)
-
+    generateColorMap(excel_writer)
     # 调整为合适的列宽
     excel_writer = setColumn(excel_writer, "总表", excel.data)
     
@@ -212,6 +211,22 @@ def generateReserved(excel_writer: pd.ExcelWriter):
     excel = excel.style.applymap(lambda _: 'text-align: center')
     excel.to_excel(excel_writer, sheet_name=sheet_name, index= False)
     excel_writer = setColumn(excel_writer, sheet_name, excel.data)
+
+def generateColorMap(excel_writer: pd.ExcelWriter):
+    sheet_name = "颜色对照表"
+    col_name = ["颜色", "含义"]
+    data = []
+    data.append([colors["team_leader"], "小组长"])
+    data.append([colors["staff"], "内部"])
+    data.append([colors["family"], "家属"])
+    #data.append([colors["vice_leader"], "小闪电"])
+    for group, color in GlobalVar.group_colors.items():
+        data.append([color, group])
+    excel = pd.DataFrame(data, columns= col_name)
+    excel = excel.style\
+        .applymap(lambda x: 'background-color: '+ x if x in [c[0] for c in data] else '')\
+        .applymap(lambda _: 'text-align: center')
+    excel.to_excel(excel_writer, sheet_name=sheet_name, index= False)
 
 
 
