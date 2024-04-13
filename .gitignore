@@ -12,3 +12,4 @@ __pycache__
 *.xlsx
 !/config/信息说明.xlsx
 !/config/文件依赖图.xlsx
+.DS_Store
