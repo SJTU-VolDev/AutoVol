@@ -153,11 +153,12 @@ def handleGroups(file_dir: str):
     """
     no_data_dict = {"姓名":[],"学号": [],"团队": []}
     file_list = os.listdir(os.path.join(file_dir,"团体"))
-
+    file_list = [file for file in file_list if file.endswith(".xlsx")]
+    file_list = sorted(file_list)
     for file_name in file_list:
 
         # 为每个团队创建一个Group对象
-        group_name = file_name.split(".")[0]
+        group_name = file_name.split(".")[0].split("-")[1]
         GlobalVar.group_lists[group_name] = Group(group_name)
         # 读取团队成员信息
         keys, table = readTableAndInterpretKeys(os.path.join(file_dir,"团体",file_name))

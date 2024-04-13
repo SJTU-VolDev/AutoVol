@@ -40,7 +40,7 @@ def assignGroups(leader_abundant=False):
     team_id = random.randint(1,len(GlobalVar.team_info) // group_num // 2)
     # 按照团体执行插入操作
     for _,group in GlobalVar.group_lists.items():
-
+        print(group.group_name)
         group_staff = calculateGroupTeamLeader(group.group_members)
         cp_of_staff = []
         for staff in group_staff:

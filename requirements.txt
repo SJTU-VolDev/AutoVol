@@ -6,3 +6,4 @@ pyinstaller
 xlsxwriter
 requests
 matplotlib
+jinja2
